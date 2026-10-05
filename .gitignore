@@ -1,0 +1,11 @@
+# App data belongs in backups, not git
+*/data/
+
+# Secrets
+.env
+*.json
+*.pem
+
+# Website has its own repo
+sites/
+!sites/README.md

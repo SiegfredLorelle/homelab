@@ -1,0 +1,13 @@
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), deny (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    192.168.68.0/22            # LAN SSH
+Anywhere on tailscale0     ALLOW IN    Anywhere                   # Tailscale mesh
+41641/udp                  ALLOW IN    Anywhere                   # Tailscale direct connections
+Anywhere (v6) on tailscale0 ALLOW IN    Anywhere (v6)              # Tailscale mesh
+41641/udp (v6)             ALLOW IN    Anywhere (v6)              # Tailscale direct connections
+

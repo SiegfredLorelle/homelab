@@ -1,0 +1,4 @@
+:8081 {
+    root * /srv/personal-website
+    file_server
+}
