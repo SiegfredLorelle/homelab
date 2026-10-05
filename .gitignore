@@ -7,5 +7,5 @@
 *.pem
 
 # Website has its own repo
-sites/
+sites/*
 !sites/README.md
