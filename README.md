@@ -21,3 +21,12 @@ I'm learning in public — this repo grows as the setup does.
 3. Copy `host/` files back to their `/etc` locations; run `sudo ./host/ufw-setup.sh`.
 4. Restore the tunnel credentials (kept outside git), then run `docker compose up -d`.
 5. Recreate the gitleaks pre-commit hook in `.git/hooks/`.
+
+## Secrets (not in git)
+Kept in my password manager as secure notes, each with its restore path:
+- **Cloudflare tunnel credentials** → `~/.cloudflared/<tunnel-id>.json`
+- **Cloudflare cert.pem** → `~/.cloudflared/cert.pem`
+
+Restore: recreate each file with the note's exact contents, then:
+
+    chmod 600 ~/.cloudflared/*.json ~/.cloudflared/cert.pem
