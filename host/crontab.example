@@ -1,0 +1,6 @@
+# User crontab for the NUC (install with `crontab -e`).
+# Replace <your-id> with the ping URL ID from the healthchecks.io dashboard.
+# Never commit the real ID.
+
+# Heartbeat: tell healthchecks.io the NUC is alive, every 5 minutes
+*/5 * * * * curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/<your-id>
