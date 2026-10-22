@@ -5,22 +5,27 @@ I'm learning in public — this repo grows as the setup does.
 
 ## Architecture
 - **Public** apps go through a Cloudflare Tunnel → Caddy. No ports are open on the router.
-- **Private** apps (admin tools, dashboards) are reachable only over Tailscale.
+- **Private** apps (admin tools, dashboards) are reachable only over Tailscale, via `tailscale serve`.
 - Host firewall (ufw): deny incoming; allow SSH from the LAN and all traffic over Tailscale.
 - SSH: keys only, no passwords, no root login.
 - Automatic security updates, with reboots at 04:00 when needed.
+- Monitoring: healthchecks.io watches the NUC from outside; Uptime Kuma watches each app.
+
+## Apps
+| App | Exposure | Notes |
+| --- | --- | --- |
+| Caddy + static site | Public (sieg.dev) | Through the Cloudflare Tunnel |
+| Uptime Kuma | Private (Tailscale) | See [`docs/monitoring.md`](docs/monitoring.md) |
 
 ## Layout
 - `docker-compose.yml`, `caddy/` — the app stack
+- `uptime-kuma/data/` — app data (gitignored; belongs in backups)
 - `sites/` — static sites (each is its own repo; see `sites/README.md`)
-- `host/` — copies of the system configs changed under `/etc`
+- `host/` — copies of the system configs changed under `/etc`, plus setup scripts
+- `docs/` — [rebuild runbook](docs/rebuild.md) and [monitoring reference](docs/monitoring.md)
 
-## Rebuild (outline)
-1. Install Ubuntu, Docker, Tailscale, cloudflared.
-2. Clone this repo to `/srv/apps`, and clone the sites into `sites/`.
-3. Copy `host/` files back to their `/etc` locations; run `sudo ./host/ufw-setup.sh`.
-4. Restore the tunnel credentials (kept outside git), then run `docker compose up -d`.
-5. Recreate the gitleaks pre-commit hook in `.git/hooks/`.
+## Rebuild
+Step by step in [`docs/rebuild.md`](docs/rebuild.md).
 
 ## Secrets (not in git)
 Kept in my password manager as secure notes, each with its restore path:
