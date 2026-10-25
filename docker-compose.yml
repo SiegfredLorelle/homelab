@@ -31,6 +31,6 @@ services:
       FTLCONF_webserver_api_password: ${PIHOLE_PASSWORD}
       FTLCONF_dns_listeningMode: all
       FTLCONF_dns_upstreams: 9.9.9.9;149.112.112.112
-      FTLCONF_dns_hosts: "100.83.224.118 arch-pc;100.118.199.45 macbook-pro-m5;100.100.1.81 nothing-phone-3a"
+      FTLCONF_dns_hosts: "100.83.224.118 arch-pc;100.118.199.45 macbook-m5-pro;100.100.1.81 nothing-phone-3a"
     volumes:
       - ./pihole/data:/etc/pihole

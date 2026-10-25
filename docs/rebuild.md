@@ -34,9 +34,19 @@ Install **Docker Engine** and the **compose plugin** following the official guid
 
 ## 3. SSH keys, then hardening
 
-1. From each laptop, copy its key to the NUC:
+1. A reinstalled NUC has a new host key. On each laptop (and in Termux on the phone), forget the old one:
+
+        ssh-keygen -R 192.168.68.62
+        ssh-keygen -R 100.115.71.107
+
+   Then, from each laptop, copy its key to the NUC:
 
         ssh-copy-id nuc
+
+   **Phone (Termux):** add its key from a laptop session — append the phone's `id_ed25519.pub` line
+   to `~/.ssh/authorized_keys` on the NUC (use `>>`, never `>`). This works before and after hardening.
+
+   Keep each key labeled by device (`arch-pc`, `macbook-m5-pro`, `nothing-phone-3a`) so a lost device's line is easy to remove.
 
 2. Get this repo onto the NUC (see step 5), then apply the hardening config:
 
@@ -154,7 +164,7 @@ Disk health (`nuc-disk` check):
 - [ ] `systemctl is-active cloudflared` shows `active`
 - [ ] `docker ps` lists `caddy`, `uptime-kuma` and `pihole`; web ports on `127.0.0.1`, Pi-hole DNS on `100.115.71.107:53`
 - [ ] https://sieg.dev loads on a phone over cellular data
-- [ ] `ssh nuc` and `ssh nuc-ts` connect with keys, no password prompt
+- [ ] `ssh nuc` and `ssh nuc-ts` connect with keys from both laptops, and `ssh nuc-ts` from the phone (Termux), no password prompt
 - [ ] Uptime Kuma loads over Tailscale, and all monitors are green
 - [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
 - [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and each device appears in Pi-hole's Query Log
