@@ -102,8 +102,8 @@ Install **Docker Engine** and the **compose plugin** following the official guid
     sudo dpkg-reconfigure -plow unattended-upgrades    # answer Yes
     sudo cp host/apt/52auto-reboot /etc/apt/apt.conf.d/
 
-    # Let Pi-hole bind to the Tailscale IP before Tailscale is up
-    sudo cp host/sysctl/99-nonlocal-bind.conf /etc/sysctl.d/
+    # Kernel settings: Pi-hole binds to the Tailscale IP before Tailscale is up; IP forwarding for the exit node
+    sudo cp host/sysctl/*.conf /etc/sysctl.d/
     sudo sysctl --system
 
 ## 7. Cloudflare Tunnel
@@ -143,6 +143,12 @@ Then start everything:
 2. **(manual)** Tailscale admin → **DNS**: add global nameserver `100.115.71.107`, turn on **Override DNS servers**, keep MagicDNS on.
 3. **(manual)** On each device: browser DNS over HTTPS **off** (Zen: Settings → Privacy & Security); Android **Private DNS** off or automatic.
 
+**Exit node (for untrusted Wi-Fi):**
+
+1. `sudo tailscale set --advertise-exit-node`
+2. **(manual)** Tailscale admin → **Machines** → the NUC → **⋯ → Edit route settings** → tick **Use as exit node**.
+3. **(manual)** Tailscale admin → **DNS** → Pi-hole nameserver → **Use with exit node** on, so ad-blocking still applies.
+
 **Uptime Kuma**: restore `uptime-kuma/data/` from backup if one exists. Otherwise open it, choose **SQLite**, create the admin account, and recreate the monitors and notification from [`monitoring.md`](monitoring.md).
 
 ## 9. Heartbeats
@@ -170,5 +176,6 @@ Disk health (`nuc-disk` check):
 - [ ] Uptime Kuma loads over Tailscale, and all monitors are green
 - [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
 - [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and each device appears in Pi-hole's Query Log
+- [ ] Phone on mobile data with the NUC as exit node: `ifconfig.me` shows the home IP
 - [ ] `sudo reboot` — everything above comes back on its own
 

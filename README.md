@@ -10,6 +10,7 @@ I'm learning in public — this repo grows as the setup does.
 - SSH: keys only, no passwords, no root login.
 - Automatic security updates, with reboots at 04:00 when needed.
 - Monitoring: healthchecks.io watches the NUC and its disk (smartd) from outside; Uptime Kuma watches each app.
+- Tailscale exit node: my devices can route through home on untrusted Wi-Fi (chosen per device, off by default).
 
 ## Apps
 | App | Exposure | Notes |
@@ -28,6 +29,10 @@ I'm learning in public — this repo grows as the setup does.
 
 ## Rebuild
 Step by step in [`docs/rebuild.md`](docs/rebuild.md).
+
+## Day to day
+- Tailscale stays connected on every device (Android: **Always-on VPN**); the exit node is only for untrusted networks.
+- Every device uses Pi-hole for DNS. If websites stop loading, turn Tailscale off on that device — if that fixes it, the NUC or Pi-hole is down (healthchecks.io / Uptime Kuma should have emailed).
 
 ## Secrets (not in git)
 Kept in my password manager as secure notes, each with its restore path:

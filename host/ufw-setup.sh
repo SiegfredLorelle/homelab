@@ -6,5 +6,6 @@ ufw default allow outgoing
 ufw allow from 192.168.68.0/22 to any port 22 proto tcp comment 'LAN SSH'
 ufw allow in on tailscale0 comment 'Tailscale mesh'
 ufw allow 41641/udp comment 'Tailscale direct connections'
+ufw route allow in on tailscale0 out on wlp58s0 comment 'Tailscale exit node'
 ufw --force enable
 ufw status verbose
