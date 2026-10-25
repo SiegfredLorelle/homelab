@@ -5,7 +5,7 @@ I'm learning in public — this repo grows as the setup does.
 
 ## Architecture
 - **Public** apps go through a Cloudflare Tunnel → Caddy. No ports are open on the router.
-- **Private** apps (admin tools, dashboards) are reachable only over Tailscale, via `tailscale serve`.
+- **Private** apps live at `<job>.lab.sieg.dev`, reachable only over Tailscale: Pi-hole resolves `*.lab.sieg.dev` to the NUC's Tailscale IP, and Caddy serves them with a Let's Encrypt wildcard certificate (Cloudflare DNS challenge). The `tailscale serve` `ts.net` URLs remain as a fallback.
 - Host firewall (ufw): deny incoming; allow SSH from the LAN and all traffic over Tailscale.
 - SSH: keys only, no passwords, no root login.
 - Automatic security updates, with reboots at 04:00 when needed.
@@ -16,12 +16,12 @@ I'm learning in public — this repo grows as the setup does.
 | App | Exposure | Notes |
 | --- | --- | --- |
 | Caddy + static site | Public (sieg.dev) | Through the Cloudflare Tunnel |
-| Uptime Kuma | Private (Tailscale) | See [`docs/monitoring.md`](docs/monitoring.md) |
-| Pi-hole | Private (Tailscale DNS) | Ad-blocking DNS for my devices; DNS on the Tailscale IP only |
+| Uptime Kuma | Private — `status.lab.sieg.dev` | See [`docs/monitoring.md`](docs/monitoring.md) |
+| Pi-hole | Private — `dns.lab.sieg.dev`; DNS on the Tailscale IP | Ad-blocking DNS for my devices |
 
 ## Layout
 - `docker-compose.yml`, `caddy/` — the app stack
-- `uptime-kuma/data/`, `pihole/data/` — app data (gitignored; belongs in backups)
+- `uptime-kuma/data/`, `pihole/data/`, `caddy/data/` — app data and certificates (gitignored; belongs in backups)
 - `.env.example` — template listing the required secrets; copy to `.env` (gitignored) and fill in
 - `sites/` — static sites (each is its own repo; see `sites/README.md`)
 - `host/` — copies of the system configs changed under `/etc`, plus setup scripts
@@ -39,6 +39,7 @@ Kept in my password manager as secure notes, each with its restore path:
 - **Cloudflare tunnel credentials** → `~/.cloudflared/<tunnel-id>.json`
 - **Cloudflare cert.pem** → `~/.cloudflared/cert.pem`
 - **Pi-hole admin password** → `/srv/apps/.env` as `PIHOLE_PASSWORD=...`
+- **Cloudflare API token (Caddy DNS)** → `/srv/apps/.env` as `CLOUDFLARE_API_TOKEN=...`
 
 Restore: recreate each file with the note's exact contents, then:
 

@@ -137,6 +137,14 @@ Then start everything:
     docker compose up -d
     sudo ./host/tailscale-serve.sh
 
+The first `docker compose up -d` builds the custom Caddy image (a few minutes). Caddy then gets the
+`lab.sieg.dev` + `*.lab.sieg.dev` certificates by itself — check with:
+
+    docker logs caddy 2>&1 | grep 'obtained successfully'
+
+If the Cloudflare token was lost, create a new one (**manual**): Cloudflare → My Profile → API Tokens →
+"Edit zone DNS" template + **Zone → Zone → Read**, zone `sieg.dev` only. Put it in `.env` and the password manager.
+
 **Pi-hole DNS for the tailnet:**
 
 1. On the NUC, keep it off its own Pi-hole: `sudo tailscale set --accept-dns=false`
@@ -177,5 +185,6 @@ Disk health (`nuc-disk` check):
 - [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
 - [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and each device appears in Pi-hole's Query Log
 - [ ] Phone on mobile data with the NUC as exit node: `ifconfig.me` shows the home IP
+- [ ] On a tailnet device: `https://status.lab.sieg.dev` and `https://dns.lab.sieg.dev` load with a valid certificate; `https://typo.lab.sieg.dev` shows the 404 page
 - [ ] `sudo reboot` — everything above comes back on its own
 

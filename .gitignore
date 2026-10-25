@@ -9,3 +9,6 @@
 # Website has its own repo
 sites/*
 !sites/README.md
+
+# Caddy's autosaved runtime config (its certificates live in caddy/data/, covered by */data/ above)
+caddy/config/

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Not found · lab.sieg.dev</title>
+  <style>
+    :root { --bg: #f6f7f9; --fg: #1d2330; --muted: #5d6675; --card: #ffffff; --accent: #2f6fde; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #11141a; --fg: #e6e9ef; --muted: #9aa3b2; --card: #1a1f28; --accent: #7aa7ff; }
+    }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center;
+           background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; }
+    main { background: var(--card); padding: 2rem 2.5rem; border-radius: 12px; max-width: 32rem; }
+    h1 { margin: 0 0 .5rem; font-size: 1.4rem; }
+    p { color: var(--muted); }
+    code { color: var(--fg); }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>No lab app here</h1>
+    <p>Nothing is set up at <code>{{html .Req.Host}}</code>. Check the name for a typo, or the app may not exist yet.</p>
+    <p><a href="https://lab.sieg.dev">See all lab apps →</a></p>
+  </main>
+</body>
+</html>

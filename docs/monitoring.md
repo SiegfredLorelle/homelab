@@ -29,7 +29,7 @@ Alerts: email. Ping URLs stay out of git — anyone holding one could send fake 
 ## Uptime Kuma
 
 Version 2, SQLite database, data in `uptime-kuma/data/` (gitignored).
-Reachable only over Tailscale at `https://<nuc>.<tailnet>.ts.net:3001` (see `host/tailscale-serve.sh`).
+Reachable only over Tailscale at `https://status.lab.sieg.dev`, with `https://<nuc>.<tailnet>.ts.net:3001` as a fallback (see `host/tailscale-serve.sh`).
 
 ### Notification
 
@@ -53,6 +53,7 @@ All monitors: heartbeat interval **60 s**, retries **2**, retry interval **60 s*
 | Personal Website (public) | HTTP(s) - Keyword | `https://sieg.dev` | Keyword from the page title; certificate expiry and domain expiry notifications on |
 | Caddy (internal) | HTTP(s) | `http://caddy:8081` | Uses the Docker service name, not `127.0.0.1` |
 | Pi-hole (DNS) | DNS | `github.com` via resolver `pihole`, port 53 | Containers can't reach `100.115.71.107` (ufw blocks the Docker bridge), so it uses the service name. Domain expiry off |
+| Lab HTTPS (certificate) | HTTP(s) | `https://status.lab.sieg.dev` | Certificate expiry on, domain expiry off. Reaches Caddy through Docker network aliases on the `caddy` service, since containers can't resolve `lab.sieg.dev` or reach the Tailscale IP |
 
 If only the public monitor fails, the problem is the tunnel or Cloudflare. If both fail, Caddy is down.
 

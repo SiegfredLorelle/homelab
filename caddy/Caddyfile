@@ -1,4 +1,42 @@
+# Public site — reached only through the Cloudflare Tunnel (cloudflared → 127.0.0.1:8081)
 :8081 {
-    root * /srv/personal-website
-    file_server
+	root * /srv/personal-website
+	file_server
+}
+
+# Private apps — tailnet only (published on the Tailscale IP, port 443).
+# Certificates via Cloudflare DNS challenge; the wildcard keeps app names out of certificate logs.
+lab.sieg.dev, *.lab.sieg.dev {
+	tls {
+		dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+		resolvers 1.1.1.1
+	}
+
+	@status host status.lab.sieg.dev
+	handle @status {
+		reverse_proxy uptime-kuma:3001
+	}
+
+	@dns host dns.lab.sieg.dev
+	handle @dns {
+		redir / /admin/
+		reverse_proxy pihole:80
+	}
+
+	# Front door: the dashboard later; for now, send visitors to the status page
+	@front host lab.sieg.dev
+	handle @front {
+		redir https://status.lab.sieg.dev{uri}
+	}
+
+	handle {
+		error 404
+	}
+
+	handle_errors 404 {
+		root * /etc/caddy/pages
+		rewrite * /404.html
+		templates
+		file_server
+	}
 }

@@ -1,13 +1,25 @@
 services:
   caddy:
-    image: caddy:2-alpine
+    build: ./caddy
+    image: homelab-caddy
     container_name: caddy
     restart: unless-stopped
     ports:
       - "127.0.0.1:8081:8081"
+      - "100.115.71.107:443:443"
+    environment:
+      CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:?Set CLOUDFLARE_API_TOKEN in .env (see .env.example)}
     volumes:
       - ./caddy/Caddyfile:/etc/caddy/Caddyfile
       - ./sites:/srv
+      - ./caddy/data:/data
+      - ./caddy/config:/config
+      - ./caddy/pages:/etc/caddy/pages:ro
+    networks:
+      default:
+        aliases:
+          - status.lab.sieg.dev
+          - dns.lab.sieg.dev
 
   uptime-kuma:
     image: louislam/uptime-kuma:2
@@ -32,5 +44,6 @@ services:
       FTLCONF_dns_listeningMode: all
       FTLCONF_dns_upstreams: 9.9.9.9;149.112.112.112
       FTLCONF_dns_hosts: "100.83.224.118 arch-pc;100.118.199.45 macbook-m5-pro;100.100.1.81 nothing-phone-3a"
+      FTLCONF_misc_dnsmasq_lines: "address=/lab.sieg.dev/100.115.71.107"
     volumes:
       - ./pihole/data:/etc/pihole
