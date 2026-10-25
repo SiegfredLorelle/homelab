@@ -52,6 +52,8 @@ Install **Docker Engine** and the **compose plugin** following the official guid
 
 **(manual)** Tailscale admin console → **DNS**: turn on **MagicDNS** and **HTTPS Certificates**.
 
+**(manual)** Keep the NUC's Tailscale IP at `100.115.71.107` — Pi-hole's ports, the tailnet DNS setting, and `nuc-ts` SSH entries depend on it. In the Tailscale admin console → **Machines**: remove the old NUC entry, then on the new one choose **⋯ → Edit machine IPv4** and set `100.115.71.107`. Run `sudo tailscale up` again if the address doesn't change right away.
+
 ## 5. This repo
 
 1. Create the NUC's deploy key and add it to this repo on GitHub (**Settings → Deploy keys**, with write access):
@@ -90,6 +92,10 @@ Install **Docker Engine** and the **compose plugin** following the official guid
     sudo dpkg-reconfigure -plow unattended-upgrades    # answer Yes
     sudo cp host/apt/52auto-reboot /etc/apt/apt.conf.d/
 
+    # Let Pi-hole bind to the Tailscale IP before Tailscale is up
+    sudo cp host/sysctl/99-nonlocal-bind.conf /etc/sysctl.d/
+    sudo sysctl --system
+
 ## 7. Cloudflare Tunnel
 
 1. Install `cloudflared` (package from Cloudflare's downloads page).
@@ -109,9 +115,21 @@ Install **Docker Engine** and the **compose plugin** following the official guid
 
 ## 8. Apps
 
+Create `/srv/apps/.env` (gitignored) with the Pi-hole admin password from the password manager:
+
+    PIHOLE_PASSWORD=<from password manager>
+
+Then start everything:
+
     cd /srv/apps
     docker compose up -d
     sudo ./host/tailscale-serve.sh
+
+**Pi-hole DNS for the tailnet:**
+
+1. On the NUC, keep it off its own Pi-hole: `sudo tailscale set --accept-dns=false`
+2. **(manual)** Tailscale admin → **DNS**: add global nameserver `100.115.71.107`, turn on **Override DNS servers**, keep MagicDNS on.
+3. **(manual)** On each device: browser DNS over HTTPS **off** (Zen: Settings → Privacy & Security); Android **Private DNS** off or automatic.
 
 **Uptime Kuma**: restore `uptime-kuma/data/` from backup if one exists. Otherwise open it, choose **SQLite**, create the admin account, and recreate the monitors and notification from [`monitoring.md`](monitoring.md).
 
@@ -134,9 +152,11 @@ Disk health (`nuc-disk` check):
 
 - [ ] `sudo ufw status` shows `active` with the expected rules
 - [ ] `systemctl is-active cloudflared` shows `active`
-- [ ] `docker ps` lists `caddy` and `uptime-kuma`, bound to `127.0.0.1`
+- [ ] `docker ps` lists `caddy`, `uptime-kuma` and `pihole`; web ports on `127.0.0.1`, Pi-hole DNS on `100.115.71.107:53`
 - [ ] https://sieg.dev loads on a phone over cellular data
 - [ ] `ssh nuc` and `ssh nuc-ts` connect with keys, no password prompt
 - [ ] Uptime Kuma loads over Tailscale, and all monitors are green
 - [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
+- [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and each device appears in Pi-hole's Query Log
 - [ ] `sudo reboot` — everything above comes back on its own
+
