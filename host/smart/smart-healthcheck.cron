@@ -1,0 +1,4 @@
+# Daily disk health ping to healthchecks.io (install as /etc/cron.d/smart-healthcheck)
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 9 * * * root /usr/local/bin/smartd-alert.sh daily

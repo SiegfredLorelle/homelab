@@ -115,9 +115,20 @@ Install **Docker Engine** and the **compose plugin** following the official guid
 
 **Uptime Kuma**: restore `uptime-kuma/data/` from backup if one exists. Otherwise open it, choose **SQLite**, create the admin account, and recreate the monitors and notification from [`monitoring.md`](monitoring.md).
 
-## 9. Heartbeat
+## 9. Heartbeats
 
-Copy `host/crontab.example` into `crontab -e`, replacing `<your-id>` with the ping URL from the healthchecks.io dashboard.
+Copy `host/crontab.example` into `crontab -e`, replacing `<your-id>` with the `nuc` check's ping URL from healthchecks.io.
+
+Disk health (`nuc-disk` check):
+
+    sudo apt install --no-install-recommends smartmontools -y
+    echo 'HC_URL=https://hc-ping.com/<nuc-disk-id>' | sudo tee /etc/smart-healthcheck.env > /dev/null
+    sudo chmod 600 /etc/smart-healthcheck.env
+    sudo cp host/smart/smartd-alert.sh /usr/local/bin/
+    sudo cp host/smart/smart-healthcheck.cron /etc/cron.d/smart-healthcheck
+    sudo cp host/smart/smartd.conf /etc/smartd.conf
+    sudo systemctl enable --now smartmontools
+    sudo /usr/local/bin/smartd-alert.sh daily
 
 ## 10. Verify
 
@@ -127,5 +138,5 @@ Copy `host/crontab.example` into `crontab -e`, replacing `<your-id>` with the pi
 - [ ] https://sieg.dev loads on a phone over cellular data
 - [ ] `ssh nuc` and `ssh nuc-ts` connect with keys, no password prompt
 - [ ] Uptime Kuma loads over Tailscale, and all monitors are green
-- [ ] healthchecks.io shows the check as up
+- [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
 - [ ] `sudo reboot` — everything above comes back on its own
