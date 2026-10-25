@@ -21,7 +21,7 @@ I'm learning in public — this repo grows as the setup does.
 ## Layout
 - `docker-compose.yml`, `caddy/` — the app stack
 - `uptime-kuma/data/`, `pihole/data/` — app data (gitignored; belongs in backups)
-- `.env` — app secrets such as the Pi-hole password (gitignored)
+- `.env.example` — template listing the required secrets; copy to `.env` (gitignored) and fill in
 - `sites/` — static sites (each is its own repo; see `sites/README.md`)
 - `host/` — copies of the system configs changed under `/etc`, plus setup scripts
 - `docs/` — [rebuild runbook](docs/rebuild.md) and [monitoring reference](docs/monitoring.md)

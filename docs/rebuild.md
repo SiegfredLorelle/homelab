@@ -125,9 +125,11 @@ Install **Docker Engine** and the **compose plugin** following the official guid
 
 ## 8. Apps
 
-Create `/srv/apps/.env` (gitignored) with the Pi-hole admin password from the password manager:
+Create `.env` from the template and fill in each value from the password manager:
 
-    PIHOLE_PASSWORD=<from password manager>
+    cd /srv/apps
+    cp .env.example .env && chmod 600 .env
+    nvim .env
 
 Then start everything:
 
