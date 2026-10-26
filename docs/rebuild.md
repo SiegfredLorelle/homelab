@@ -108,7 +108,13 @@ Install **Docker Engine** and the **compose plugin** following the official guid
 
 ## 7. Cloudflare Tunnel
 
-1. Install `cloudflared` (package from Cloudflare's downloads page).
+1. Install `cloudflared` from Cloudflare's apt repository, so `apt upgrade` keeps it current:
+
+        sudo mkdir -p --mode=0755 /usr/share/keyrings
+        curl -fsSL https://pkg.cloudflare.com/cloudflare-main.gpg | sudo tee /usr/share/keyrings/cloudflare-main.gpg > /dev/null
+        echo 'deb [signed-by=/usr/share/keyrings/cloudflare-main.gpg] https://pkg.cloudflare.com/cloudflared any main' | sudo tee /etc/apt/sources.list.d/cloudflared.list
+        sudo apt update && sudo apt install cloudflared
+
 2. Restore the two secure notes from the password manager — see **Secrets** in the README:
 
         mkdir -p ~/.cloudflared
