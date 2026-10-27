@@ -159,9 +159,18 @@ If the Cloudflare token was lost, create a new one (**manual**): Cloudflare → 
 
 **Exit node (for untrusted Wi-Fi):**
 
-1. `sudo tailscale set --advertise-exit-node`
-2. **(manual)** Tailscale admin → **Machines** → the NUC → **⋯ → Edit route settings** → tick **Use as exit node**.
-3. **(manual)** Tailscale admin → **DNS** → Pi-hole nameserver → **Use with exit node** on, so ad-blocking still applies.
+1. Rewrite the sender only for exit-node internet traffic, so Pi-hole keeps seeing real device names:
+
+        sudo cp host/systemd/exit-node-nat.service /etc/systemd/system/
+        sudo systemctl daemon-reload
+        sudo systemctl enable --now exit-node-nat
+
+2. Offer the exit node with Tailscale's own catch-all rewriting off (its warning is expected; step 1 does that job):
+
+        sudo tailscale set --advertise-exit-node --snat-subnet-routes=false
+
+3. **(manual)** Tailscale admin → **Machines** → the NUC → **⋯ → Edit route settings** → tick **Use as exit node**.
+4. **(manual)** Tailscale admin → **DNS** → Pi-hole nameserver → **Use with exit node** on, so ad-blocking still applies.
 
 **Uptime Kuma**: restore `uptime-kuma/data/` from backup if one exists. Otherwise open it, choose **SQLite**, create the admin account, and recreate the monitors and notification from [`monitoring.md`](monitoring.md).
 
@@ -189,8 +198,7 @@ Disk health (`nuc-disk` check):
 - [ ] `ssh nuc` and `ssh nuc-ts` connect with keys from both laptops, and `ssh nuc-ts` from the phone (Termux), no password prompt
 - [ ] Uptime Kuma loads over Tailscale, and all monitors are green
 - [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
-- [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and each device appears in Pi-hole's Query Log
+- [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and Pi-hole's Query Log shows each device by name (not `172.18.0.1`)
 - [ ] Phone on mobile data with the NUC as exit node: `ifconfig.me` shows the home IP
 - [ ] On a tailnet device: `https://status.lab.sieg.dev` and `https://dns.lab.sieg.dev` load with a valid certificate; `https://typo.lab.sieg.dev` shows the 404 page
 - [ ] `sudo reboot` — everything above comes back on its own
-
