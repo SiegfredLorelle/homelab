@@ -12,3 +12,7 @@ sites/*
 
 # Caddy's autosaved runtime config (its certificates live in caddy/data/, covered by */data/ above)
 caddy/config/
+
+# Homepage writes logs into its config folder
+homepage/config/logs/
+

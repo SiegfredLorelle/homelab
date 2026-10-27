@@ -1,0 +1,15 @@
+- Homelab:
+    - Repo:
+        - abbr: GH
+          href: https://github.com/SiegfredLorelle/homelab
+
+- Admin:
+    - Tailscale:
+        - abbr: TS
+          href: https://login.tailscale.com/admin
+    - Cloudflare:
+        - abbr: CF
+          href: https://dash.cloudflare.com
+    - healthchecks.io:
+        - abbr: HC
+          href: https://healthchecks.io/projects/2e2bb7bd-bf99-49af-a4ad-475ab09a202f/checks/

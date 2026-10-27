@@ -1,0 +1,26 @@
+- Lab:
+    - Uptime Kuma:
+        icon: uptime-kuma.png
+        href: https://status.lab.sieg.dev
+        description: Monitoring and alerts
+        siteMonitor: http://uptime-kuma:3001
+        widget:
+          type: uptimekuma
+          url: http://uptime-kuma:3001
+          slug: lab
+    - Pi-hole:
+        icon: pi-hole.png
+        href: https://dns.lab.sieg.dev
+        description: Ad-blocking DNS for my devices
+        widget:
+          type: pihole
+          url: http://pihole
+          version: 6
+          key: "{{HOMEPAGE_VAR_PIHOLE_KEY}}"
+
+- Public:
+    - sieg.dev:
+        icon: mdi-web
+        href: https://sieg.dev
+        description: Personal website, via Cloudflare Tunnel
+        siteMonitor: http://caddy:8081

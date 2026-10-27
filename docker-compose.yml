@@ -18,6 +18,7 @@ services:
     networks:
       default:
         aliases:
+          - lab.sieg.dev
           - status.lab.sieg.dev
           - dns.lab.sieg.dev
 
@@ -47,3 +48,15 @@ services:
       FTLCONF_misc_dnsmasq_lines: "address=/lab.sieg.dev/100.115.71.107"
     volumes:
       - ./pihole/data:/etc/pihole
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:v2.7.0
+    container_name: homepage
+    restart: unless-stopped
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: lab.sieg.dev
+      PUID: 1000
+      PGID: 1000
+      HOMEPAGE_VAR_PIHOLE_KEY: ${HOMEPAGE_VAR_PIHOLE_KEY:?Set HOMEPAGE_VAR_PIHOLE_KEY in .env (see .env.example)}
+    volumes:
+      - ./homepage/config:/app/config

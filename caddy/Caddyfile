@@ -23,12 +23,11 @@ lab.sieg.dev, *.lab.sieg.dev {
 		reverse_proxy pihole:80
 	}
 
-	# Front door: the dashboard later; for now, send visitors to the status page
+	# Front door: the dashboard
 	@front host lab.sieg.dev
 	handle @front {
-		redir https://status.lab.sieg.dev{uri}
+		reverse_proxy homepage:3000
 	}
-
 	handle {
 		error 404
 	}

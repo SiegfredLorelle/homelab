@@ -18,10 +18,12 @@ I'm learning in public — this repo grows as the setup does.
 | Caddy + static site | Public (sieg.dev) | Through the Cloudflare Tunnel |
 | Uptime Kuma | Private — `status.lab.sieg.dev` | See [`docs/monitoring.md`](docs/monitoring.md) |
 | Pi-hole | Private — `dns.lab.sieg.dev`; DNS on the Tailscale IP | Ad-blocking DNS for my devices |
+| Homepage (dashboard) | Private — `lab.sieg.dev` | Start page: app tiles, live Pi-hole and Uptime Kuma widgets. Config in `homepage/config/` |
 
 ## Layout
 - `docker-compose.yml`, `caddy/` — the app stack
 - `uptime-kuma/data/`, `pihole/data/`, `caddy/data/` — app data and certificates (gitignored; belongs in backups)
+- `homepage/config/` — dashboard config (YAML); its `logs/` folder is gitignored
 - `.env.example` — template listing the required secrets; copy to `.env` (gitignored) and fill in
 - `sites/` — static sites (each is its own repo; see `sites/README.md`)
 - `host/` — copies of the system configs changed under `/etc`, plus setup scripts
@@ -38,8 +40,9 @@ Step by step in [`docs/rebuild.md`](docs/rebuild.md).
 Kept in my password manager as secure notes, each with its restore path:
 - **Cloudflare tunnel credentials** → `~/.cloudflared/<tunnel-id>.json`
 - **Cloudflare cert.pem** → `~/.cloudflared/cert.pem`
-- **Pi-hole admin password** → `/srv/apps/.env` as `PIHOLE_PASSWORD=...`
 - **Cloudflare API token (Caddy DNS)** → `/srv/apps/.env` as `CLOUDFLARE_API_TOKEN=...`
+- **Pi-hole admin password** → `/srv/apps/.env` as `PIHOLE_PASSWORD=...`
+- **Pi-hole app password (Homepage)** → `/srv/apps/.env` as `HOMEPAGE_VAR_PIHOLE_KEY=...`
 
 Restore: recreate each file with the note's exact contents, then:
 

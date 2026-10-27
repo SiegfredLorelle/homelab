@@ -54,6 +54,9 @@ All monitors: heartbeat interval **60 s**, retries **2**, retry interval **60 s*
 | Caddy (internal) | HTTP(s) | `http://caddy:8081` | Uses the Docker service name, not `127.0.0.1` |
 | Pi-hole (DNS) | DNS | `github.com` via resolver `pihole`, port 53 | Containers can't reach `100.115.71.107` (ufw blocks the Docker bridge), so it uses the service name. Domain expiry off |
 | Lab HTTPS (certificate) | HTTP(s) | `https://status.lab.sieg.dev` | Certificate expiry on, domain expiry off. Reaches Caddy through Docker network aliases on the `caddy` service, since containers can't resolve `lab.sieg.dev` or reach the Tailscale IP |
+| Dashboard (lab.sieg.dev) | HTTP(s) | `https://lab.sieg.dev` | Certificate expiry on (covers the separate `lab.sieg.dev` certificate), domain expiry off. Via the `lab.sieg.dev` Docker alias on Caddy |
+
+**Status page `lab`** (slug `lab`) lists every monitor. Homepage's Uptime Kuma widget reads it, so add new monitors to it too.
 
 If only the public monitor fails, the problem is the tunnel or Cloudflare. If both fail, Caddy is down.
 

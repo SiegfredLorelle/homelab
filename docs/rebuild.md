@@ -174,6 +174,11 @@ If the Cloudflare token was lost, create a new one (**manual**): Cloudflare → 
 
 **Uptime Kuma**: restore `uptime-kuma/data/` from backup if one exists. Otherwise open it, choose **SQLite**, create the admin account, and recreate the monitors and notification from [`monitoring.md`](monitoring.md).
 
+**Homepage (dashboard at `lab.sieg.dev`)**: on a fresh install, put a temporary value like `HOMEPAGE_VAR_PIHOLE_KEY=temp` in `.env` so the stack can start. Then:
+
+1. **(manual)** Pi-hole → **Settings → Web interface / API** (Expert mode) → **Configure app password**. Save it in the password manager and in `.env`, then `docker compose up -d`.
+2. **(manual)** Uptime Kuma → **Status Pages**: create `Lab` with slug `lab` containing all monitors — Homepage's Uptime Kuma widget reads it.
+
 ## 9. Heartbeats
 
 Copy `host/crontab.example` into `crontab -e`, replacing `<your-id>` with the `nuc` check's ping URL from healthchecks.io.
@@ -193,7 +198,7 @@ Disk health (`nuc-disk` check):
 
 - [ ] `sudo ufw status` shows `active` with the expected rules
 - [ ] `systemctl is-active cloudflared` shows `active`
-- [ ] `docker ps` lists `caddy`, `uptime-kuma` and `pihole`; web ports on `127.0.0.1`, Pi-hole DNS on `100.115.71.107:53`
+- [ ] `docker ps` lists `caddy`, `uptime-kuma`, `pihole` and `homepage`; web ports on `127.0.0.1`, Pi-hole DNS on `100.115.71.107:53`
 - [ ] https://sieg.dev loads on a phone over cellular data
 - [ ] `ssh nuc` and `ssh nuc-ts` connect with keys from both laptops, and `ssh nuc-ts` from the phone (Termux), no password prompt
 - [ ] Uptime Kuma loads over Tailscale, and all monitors are green
@@ -201,4 +206,5 @@ Disk health (`nuc-disk` check):
 - [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and Pi-hole's Query Log shows each device by name (not `172.18.0.1`)
 - [ ] Phone on mobile data with the NUC as exit node: `ifconfig.me` shows the home IP
 - [ ] On a tailnet device: `https://status.lab.sieg.dev` and `https://dns.lab.sieg.dev` load with a valid certificate; `https://typo.lab.sieg.dev` shows the 404 page
+- [ ] `https://lab.sieg.dev` shows the dashboard, and both widgets show numbers
 - [ ] `sudo reboot` — everything above comes back on its own
