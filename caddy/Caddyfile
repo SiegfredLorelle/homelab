@@ -28,6 +28,7 @@ lab.sieg.dev, *.lab.sieg.dev {
 	handle @front {
 		reverse_proxy homepage:3000
 	}
+
 	handle {
 		error 404
 	}
@@ -35,6 +36,13 @@ lab.sieg.dev, *.lab.sieg.dev {
 	handle_errors 404 {
 		root * /etc/caddy/pages
 		rewrite * /404.html
+		templates
+		file_server
+	}
+
+	handle_errors 502 503 504 {
+		root * /etc/caddy/pages
+		rewrite * /down.html
 		templates
 		file_server
 	}

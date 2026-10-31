@@ -210,6 +210,6 @@ Disk health (`nuc-disk` check):
 - [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
 - [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and Pi-hole's Query Log shows each device by name (not `172.18.0.1`)
 - [ ] Phone on mobile data with the NUC as exit node: `ifconfig.me` shows the home IP
-- [ ] On a tailnet device: `https://status.lab.sieg.dev` and `https://dns.lab.sieg.dev` load with a valid certificate; `https://typo.lab.sieg.dev` shows the 404 page
+- [ ] On a tailnet device: `https://status.lab.sieg.dev` and `https://dns.lab.sieg.dev` load with a valid certificate; `https://typo.lab.sieg.dev` shows the 404 page; stopping an app (e.g. `docker stop uptime-kuma`) shows the "App not responding" page, then `docker start` it again
 - [ ] `https://lab.sieg.dev` shows the dashboard, and both widgets show numbers
 - [ ] `sudo reboot` — everything above comes back on its own
