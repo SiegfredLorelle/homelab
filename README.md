@@ -27,7 +27,9 @@ I'm learning in public — this repo grows as the setup does.
 - `.env.example` — template listing the required secrets; copy to `.env` (gitignored) and fill in
 - `sites/` — static sites (each is its own repo; see `sites/README.md`)
 - `host/` — copies of the system configs changed under `/etc`, plus setup scripts
-- `docs/` — [rebuild runbook](docs/rebuild.md) and [monitoring reference](docs/monitoring.md)
+- `docs/` — [rebuild runbook](docs/rebuild.md), [monitoring reference](docs/monitoring.md), [updates](docs/updates.md)
+- `deploy.sh` — deploy what's on `main` (pull, fetch/rebuild images, restart what changed)
+- `renovate.json` — Renovate settings for update PRs; see [`docs/updates.md`](docs/updates.md)
 
 ## Rebuild
 Step by step in [`docs/rebuild.md`](docs/rebuild.md).

@@ -85,6 +85,10 @@ Install **Docker Engine** and the **compose plugin** following the official guid
         EOF
         chmod +x /srv/apps/.git/hooks/pre-commit
 
+4. Make `git pull` refuse to merge diverged histories (Renovate also commits to GitHub):
+
+        git config --global pull.ff only
+
 ## 6. Host configs
 
     cd /srv/apps
