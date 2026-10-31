@@ -16,3 +16,6 @@ caddy/config/
 # Homepage writes logs into its config folder
 homepage/config/logs/
 
+
+# Renovate's config is JSON but not a secret (the *.json rule above is for credentials)
+!renovate.json

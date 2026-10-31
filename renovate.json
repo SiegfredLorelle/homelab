@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "docker:pinDigests"],
+  "timezone": "Asia/Manila",
+  "schedule": ["before 9am on saturday"],
+  "dependencyDashboard": true,
+  "ignoreDeps": ["homelab-caddy"],
+  "packageRules": [
+    {
+      "description": "Group image digest updates into one PR",
+      "matchUpdateTypes": ["digest", "pinDigest"],
+      "groupName": "container image digests"
+    },
+    {
+      "description": "Major versions wait for approval on the Dependency Dashboard",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    }
+  ]
+}
