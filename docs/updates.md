@@ -20,15 +20,27 @@ Want an update before Saturday? Tick its box on the Dependency Dashboard.
 
 ## Host packages (apt)
 
-Ubuntu's own packages update daily via unattended-upgrades (reboot at 04:00 if needed).
-**Not covered**: packages from added repositories — cloudflared, Tailscale, Docker Engine.
-Check with `apt list --upgradable`; update with `sudo apt update && sudo apt upgrade`.
-(An automatic setup for these is planned.)
+Updated daily by unattended-upgrades (reboot at 04:00 if needed):
+- Ubuntu security updates — including Docker, which is Ubuntu's own package (`docker.io`),
+  so only conservative fixes
+- **Tailscale, cloudflared, NodeSource (Node 24)** — added in `host/apt/51unattended-upgrades-thirdparty`
+
+**Manual**: Ubuntu's non-security bug-fix updates. Check occasionally (e.g. with Saturday's
+Renovate PRs): `apt list --upgradable`, then `sudo apt update && sudo apt upgrade`.
+
+**Adding a third-party repo later**: find its labels with `apt-cache policy`, add a line to
+`host/apt/51unattended-upgrades-thirdparty`, copy it to `/etc/apt/apt.conf.d/`, and check with
+`sudo unattended-upgrade --dry-run --debug 2>&1 | grep -i 'allowed origins'`.
+
+Updated services restart themselves automatically (Ubuntu's `needrestart`, e.g. cloudflared).
+**Kernel** updates need a reboot — automatic at 04:00, or `sudo reboot` to do it while watching.
 
 ## Habits
 
 - **Pull before editing on the NUC**: Renovate commits to GitHub too. `git pull` is set to `--ff-only`
   (`git config --global pull.ff only`), so diverged histories stop instead of merging silently.
-- If `git pull` says the branches have diverged, you have unpushed local commits while GitHub moved on (e.g. a merged Renovate PR). Run `git pull --rebase` — it replays your local commits on top. Safe for commits not yet pushed.
+- If `git pull` says the branches have diverged, you have unpushed local commits while GitHub
+  moved on (e.g. a merged Renovate PR). Run `git pull --rebase` — it replays your local commits
+  on top. Safe for commits not yet pushed.
 - **Security news** about something we run (Tailscale, cloudflared, Caddy…): check whether our setup
   uses the affected feature, then update — even if not affected.

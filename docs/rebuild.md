@@ -28,8 +28,9 @@ You need access to:
     sudo apt install -y git ufw unattended-upgrades kitty-terminfo neovim gitleaks
     sudo update-alternatives --config editor    # pick nvim
 
-Install **Docker Engine** and the **compose plugin** following the official guide for Ubuntu (docs.docker.com/engine/install/ubuntu), then let your user run Docker:
+Install Docker from **Ubuntu's own packages** (kept current by Ubuntu's security updates — see [`updates.md`](updates.md)), then let your user run Docker:
 
+    sudo apt install -y docker.io docker-compose-v2 docker-buildx
     sudo usermod -aG docker "$USER"    # log out and back in afterwards
 
 ## 3. SSH keys, then hardening
@@ -102,9 +103,9 @@ Install **Docker Engine** and the **compose plugin** following the official guid
       /etc/systemd/system/systemd-networkd-wait-online.service.d/override.conf
     sudo systemctl daemon-reload
 
-    # Automatic security updates + 04:00 reboots
+    # Automatic security updates + 04:00 reboots, plus Tailscale/cloudflared/NodeSource repos
     sudo dpkg-reconfigure -plow unattended-upgrades    # answer Yes
-    sudo cp host/apt/52auto-reboot /etc/apt/apt.conf.d/
+    sudo cp host/apt/5* /etc/apt/apt.conf.d/
 
     # Kernel settings: Pi-hole binds to the Tailscale IP before Tailscale is up; IP forwarding for the exit node
     sudo cp host/sysctl/*.conf /etc/sysctl.d/

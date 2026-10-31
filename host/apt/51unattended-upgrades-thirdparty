@@ -1,0 +1,7 @@
+// Also install updates automatically from these third-party repositories.
+// Labels come from `apt-cache policy` (o=origin, n=codename, l=label); NodeSource is matched by site.
+Unattended-Upgrade::Origins-Pattern {
+    "origin=Tailscale,codename=${distro_codename},label=Tailscale";
+    "origin=cloudflared,codename=any,label=cloudflared";
+    "site=deb.nodesource.com";
+};
