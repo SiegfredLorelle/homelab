@@ -23,7 +23,7 @@ services:
           - dns.lab.sieg.dev
 
   uptime-kuma:
-    image: louislam/uptime-kuma:2
+    image: louislam/uptime-kuma:2@sha256:20abea8c48a163cf0a7a5d5936ab418e4b742d908704e1f58f6c06e56a9c6b67
     container_name: uptime-kuma
     restart: unless-stopped
     ports:
@@ -32,7 +32,7 @@ services:
       - ./uptime-kuma/data:/app/data
 
   pihole:
-    image: pihole/pihole:2026.10.0
+    image: pihole/pihole:2026.10.0@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113
     container_name: pihole
     restart: unless-stopped
     ports:
@@ -50,7 +50,7 @@ services:
       - ./pihole/data:/etc/pihole
 
   homepage:
-    image: ghcr.io/gethomepage/homepage:v2.7.0
+    image: ghcr.io/gethomepage/homepage:v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f
     container_name: homepage
     restart: unless-stopped
     environment:
