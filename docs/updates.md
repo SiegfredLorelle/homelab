@@ -29,5 +29,6 @@ Check with `apt list --upgradable`; update with `sudo apt update && sudo apt upg
 
 - **Pull before editing on the NUC**: Renovate commits to GitHub too. `git pull` is set to `--ff-only`
   (`git config --global pull.ff only`), so diverged histories stop instead of merging silently.
+- If `git pull` says the branches have diverged, you have unpushed local commits while GitHub moved on (e.g. a merged Renovate PR). Run `git pull --rebase` — it replays your local commits on top. Safe for commits not yet pushed.
 - **Security news** about something we run (Tailscale, cloudflared, Caddy…): check whether our setup
   uses the affected feature, then update — even if not affected.
