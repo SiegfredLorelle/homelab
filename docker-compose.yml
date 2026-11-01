@@ -43,11 +43,13 @@ services:
       TZ: Asia/Manila
       FTLCONF_webserver_api_password: ${PIHOLE_PASSWORD:?Set PIHOLE_PASSWORD in .env (see .env.example)}
       FTLCONF_dns_listeningMode: all
-      FTLCONF_dns_upstreams: 9.9.9.9;149.112.112.112
+      FTLCONF_dns_upstreams: 172.30.0.53#53
       FTLCONF_dns_hosts: "100.83.224.118 arch-pc;100.118.199.45 macbook-m5-pro;100.100.1.81 nothing-phone-3a"
       FTLCONF_misc_dnsmasq_lines: "address=/lab.sieg.dev/100.115.71.107"
     volumes:
       - ./pihole/data:/etc/pihole
+    depends_on:
+      - unbound
 
   homepage:
     image: ghcr.io/gethomepage/homepage:v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f
@@ -60,3 +62,22 @@ services:
       HOMEPAGE_VAR_PIHOLE_KEY: ${HOMEPAGE_VAR_PIHOLE_KEY:?Set HOMEPAGE_VAR_PIHOLE_KEY in .env (see .env.example)}
     volumes:
       - ./homepage/config:/app/config
+
+  unbound:
+    image: klutchell/unbound:v1.26.2
+    container_name: unbound
+    restart: unless-stopped
+    volumes:
+      - ./unbound:/etc/unbound/custom.conf.d:ro
+    networks:
+      default:
+        ipv4_address: 172.30.0.53
+
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+          gateway: 172.30.0.1
+          ip_range: 172.30.0.128/25
+

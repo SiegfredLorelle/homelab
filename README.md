@@ -17,7 +17,7 @@ I'm learning in public — this repo grows as the setup does.
 | --- | --- | --- |
 | Caddy + static site | Public (sieg.dev) | Through the Cloudflare Tunnel |
 | Uptime Kuma | Private — `status.lab.sieg.dev` | See [`docs/monitoring.md`](docs/monitoring.md) |
-| Pi-hole | Private — `dns.lab.sieg.dev`; DNS on the Tailscale IP | Ad-blocking DNS for my devices |
+| Pi-hole | Private — `dns.lab.sieg.dev`; DNS on the Tailscale IP | Ad-blocking DNS for my devices; upstream lookups go to Quad9 encrypted (DNS-over-TLS) via Unbound |
 | Homepage (dashboard) | Private — `lab.sieg.dev` | Start page: app tiles, live Pi-hole and Uptime Kuma widgets. Config in `homepage/config/` |
 
 ## Layout
@@ -30,6 +30,7 @@ I'm learning in public — this repo grows as the setup does.
 - `docs/` — [rebuild runbook](docs/rebuild.md), [monitoring reference](docs/monitoring.md), [updates](docs/updates.md)
 - `deploy.sh` — deploy what's on `main` (pull, fetch/rebuild images, restart what changed)
 - `renovate.json` — Renovate settings for update PRs; see [`docs/updates.md`](docs/updates.md)
+- `unbound/` — Unbound config: forwards Pi-hole's lookups to Quad9 over TLS
 
 ## Rebuild
 Step by step in [`docs/rebuild.md`](docs/rebuild.md).

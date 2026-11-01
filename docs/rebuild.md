@@ -203,13 +203,14 @@ Disk health (`nuc-disk` check):
 
 - [ ] `sudo ufw status` shows `active` with the expected rules
 - [ ] `systemctl is-active cloudflared` shows `active`
-- [ ] `docker ps` lists `caddy`, `uptime-kuma`, `pihole` and `homepage`; web ports on `127.0.0.1`, Pi-hole DNS on `100.115.71.107:53`
+- [ ] `docker ps` lists `caddy`, `uptime-kuma`, `pihole`, `homepage` and `unbound`; web ports on `127.0.0.1`, Pi-hole DNS on `100.115.71.107:53`
 - [ ] https://sieg.dev loads on a phone over cellular data
 - [ ] `ssh nuc` and `ssh nuc-ts` connect with keys from both laptops, and `ssh nuc-ts` from the phone (Termux), no password prompt
 - [ ] Uptime Kuma loads over Tailscale, and all monitors are green
 - [ ] healthchecks.io shows `nuc` and `nuc-disk` as up
-- [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and Pi-hole's Query Log shows each device by name (not `172.18.0.1`)
+- [ ] `nslookup doubleclick.net` on a laptop returns `0.0.0.0`, and Pi-hole's Query Log shows each device by name (not `172.30.0.1`)
 - [ ] Phone on mobile data with the NUC as exit node: `ifconfig.me` shows the home IP
 - [ ] On a tailnet device: `https://status.lab.sieg.dev` and `https://dns.lab.sieg.dev` load with a valid certificate; `https://typo.lab.sieg.dev` shows the 404 page; stopping an app (e.g. `docker stop uptime-kuma`) shows the "App not responding" page, then `docker start` it again
 - [ ] `https://lab.sieg.dev` shows the dashboard, and both widgets show numbers
+- [ ] Encrypted DNS: `sudo timeout 20 tcpdump -ni wlp58s0 'port 53 and not host 100.115.71.107'` captures nothing while a laptop looks up new names; the same with `'port 853'` shows traffic to Quad9
 - [ ] `sudo reboot` — everything above comes back on its own

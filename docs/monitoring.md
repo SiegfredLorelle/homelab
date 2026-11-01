@@ -55,6 +55,7 @@ All monitors: heartbeat interval **60 s**, retries **2**, retry interval **60 s*
 | Pi-hole (DNS) | DNS | `github.com` via resolver `pihole`, port 53 | Containers can't reach `100.115.71.107` (ufw blocks the Docker bridge), so it uses the service name. Domain expiry off |
 | Lab HTTPS (certificate) | HTTP(s) | `https://status.lab.sieg.dev` | Certificate expiry on, domain expiry off. Reaches Caddy through Docker network aliases on the `caddy` service, since containers can't resolve `lab.sieg.dev` or reach the Tailscale IP |
 | Dashboard (lab.sieg.dev) | HTTP(s) | `https://lab.sieg.dev` | Certificate expiry on (covers the separate `lab.sieg.dev` certificate), domain expiry off. Via the `lab.sieg.dev` Docker alias on Caddy |
+| Unbound (encrypted DNS) | DNS | `github.com` via resolver `172.30.0.53`, port 53 | Pi-hole's upstream; forwards to Quad9 over DNS-over-TLS. Fixed IP on the compose network. Domain expiry off |
 
 **Status page `lab`** (slug `lab`) lists every monitor. Homepage's Uptime Kuma widget reads it, so add new monitors to it too.
 
