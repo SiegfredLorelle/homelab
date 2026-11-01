@@ -27,7 +27,7 @@ I'm learning in public — this repo grows as the setup does.
 - `.env.example` — template listing the required secrets; copy to `.env` (gitignored) and fill in
 - `sites/` — static sites (each is its own repo; see `sites/README.md`)
 - `host/` — copies of the system configs changed under `/etc`, plus setup scripts
-- `docs/` — [rebuild runbook](docs/rebuild.md), [monitoring reference](docs/monitoring.md), [updates](docs/updates.md)
+- `docs/` — [rebuild runbook](docs/rebuild.md), [monitoring reference](docs/monitoring.md), [updates](docs/updates.md), [email](docs/email.md)
 - `deploy.sh` — deploy what's on `main` (pull, fetch/rebuild images, restart what changed)
 - `renovate.json` — Renovate settings for update PRs; see [`docs/updates.md`](docs/updates.md)
 - `unbound/` — Unbound config: forwards Pi-hole's lookups to Quad9 over TLS
@@ -46,6 +46,7 @@ Kept in my password manager as secure notes, each with its restore path:
 - **Cloudflare API token (Caddy DNS)** → `/srv/apps/.env` as `CLOUDFLARE_API_TOKEN=...`
 - **Pi-hole admin password** → `/srv/apps/.env` as `PIHOLE_PASSWORD=...`
 - **Pi-hole app password (Homepage)** → `/srv/apps/.env` as `HOMEPAGE_VAR_PIHOLE_KEY=...`
+- **Resend API key (Gmail send-as)** → not on the NUC; used in Gmail → Send mail as (see [`docs/email.md`](docs/email.md))
 
 Restore: recreate each file with the note's exact contents, then:
 
