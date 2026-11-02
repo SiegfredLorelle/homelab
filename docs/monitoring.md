@@ -30,6 +30,7 @@ Alerts: email. Ping URLs stay out of git — anyone holding one could send fake 
 
 Version 2, SQLite database, data in `uptime-kuma/data/` (gitignored).
 Reachable only over Tailscale at `https://status.lab.sieg.dev`, with `https://<nuc>.<tailnet>.ts.net:3001` as a fallback (see `host/tailscale-serve.sh`).
+The container has a fixed IP, `172.30.0.10`, so Pi-hole's Query Log shows its DNS checks as `uptime-kuma`.
 
 ### Notification
 
@@ -46,7 +47,7 @@ Switch this to the new provider's SMTP server when email moves off Gmail, then r
 
 ### Monitors
 
-All monitors: heartbeat interval **60 s**, retries **2**, retry interval **60 s**.
+All monitors: heartbeat interval **60 s**, retries **2**, retry interval **60 s** (mail DNS monitors: **300 s**).
 
 | Name | Type | Target | Extra |
 | --- | --- | --- | --- |
@@ -56,6 +57,8 @@ All monitors: heartbeat interval **60 s**, retries **2**, retry interval **60 s*
 | Lab HTTPS (certificate) | HTTP(s) | `https://status.lab.sieg.dev` | Certificate expiry on, domain expiry off. Reaches Caddy through Docker network aliases on the `caddy` service, since containers can't resolve `lab.sieg.dev` or reach the Tailscale IP |
 | Dashboard (lab.sieg.dev) | HTTP(s) | `https://lab.sieg.dev` | Certificate expiry on (covers the separate `lab.sieg.dev` certificate), domain expiry off. Via the `lab.sieg.dev` Docker alias on Caddy |
 | Unbound (encrypted DNS) | DNS | `github.com` via resolver `172.30.0.53`, port 53 | Pi-hole's upstream; forwards to Quad9 over DNS-over-TLS. Fixed IP on the compose network. Domain expiry off |
+| Mail MX (sieg.dev) | DNS | `sieg.dev` MX via resolver `1.1.1.1`, every 300 s | Alerts if the mail delivery (MX) records disappear or stop resolving (checks public DNS, not Pi-hole). Domain expiry off |
+| Mail DKIM (Resend) | DNS | `resend._domainkey.sieg.dev` TXT via `1.1.1.1`, every 300 s | Alerts if Resend's signing record disappears. Domain expiry off |
 
 **Status page `lab`** (slug `lab`) lists every monitor. Homepage's Uptime Kuma widget reads it, so add new monitors to it too.
 

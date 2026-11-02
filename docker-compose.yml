@@ -30,6 +30,9 @@ services:
       - "127.0.0.1:3001:3001"
     volumes:
       - ./uptime-kuma/data:/app/data
+    networks:
+      default:
+        ipv4_address: 172.30.0.10
 
   pihole:
     image: pihole/pihole:2026.10.1@sha256:30f803ad5dd60ff96cc0a63008a2e9271af481c1b0399a182192b2e91152c1f9
@@ -44,7 +47,7 @@ services:
       FTLCONF_webserver_api_password: ${PIHOLE_PASSWORD:?Set PIHOLE_PASSWORD in .env (see .env.example)}
       FTLCONF_dns_listeningMode: all
       FTLCONF_dns_upstreams: 172.30.0.53#53
-      FTLCONF_dns_hosts: "100.83.224.118 arch-pc;100.118.199.45 macbook-m5-pro;100.100.1.81 nothing-phone-3a"
+      FTLCONF_dns_hosts: "100.83.224.118 arch-pc;100.118.199.45 macbook-m5-pro;100.100.1.81 nothing-phone-3a;172.30.0.10 uptime-kuma"
       FTLCONF_misc_dnsmasq_lines: "address=/lab.sieg.dev/100.115.71.107"
     volumes:
       - ./pihole/data:/etc/pihole

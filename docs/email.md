@@ -62,6 +62,16 @@ Reports show who sends as `sieg.dev`. **Plan:** once reports show only Resend, t
 - Gmail's "Show original" summary says DMARC **FAIL** when there is no DMARC result at all (e.g. no record yet,
   or a cached "no record" answer). Check the raw `Authentication-Results:` line for `dmarc=`.
 
+## When something goes wrong
+
+| Problem | Where to look |
+| --- | --- |
+| Mail to `@sieg.dev` not arriving | Cloudflare → Email Routing → `sieg.dev` → **Activity log** (forwarded / rejected / failed) |
+| Sent mail not arriving / bounced | **Resend → Emails / Logs** — bounces go to Resend (`rsend.sieg.dev`), not to Gmail |
+| Gmail can't send as `@sieg.dev` | Gmail's "message not delivered" notice; check the Resend API key in Send mail as |
+| Spoofing / authentication issues | Cloudflare → **DMARC Management** reports |
+| Records changed or missing | Uptime Kuma monitors **Mail MX** and **Mail DKIM**; domain expiry is watched by **Personal Website** |
+
 ## Moving later
 
 The addresses never change: only DNS and settings do.
