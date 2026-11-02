@@ -21,6 +21,8 @@ services:
           - lab.sieg.dev
           - status.lab.sieg.dev
           - dns.lab.sieg.dev
+    dns:
+      - 172.30.0.53
 
   uptime-kuma:
     image: louislam/uptime-kuma:2@sha256:20abea8c48a163cf0a7a5d5936ab418e4b742d908704e1f58f6c06e56a9c6b67
@@ -33,6 +35,8 @@ services:
     networks:
       default:
         ipv4_address: 172.30.0.10
+    dns:
+      - 172.30.0.53
 
   pihole:
     image: pihole/pihole:2026.10.1@sha256:30f803ad5dd60ff96cc0a63008a2e9271af481c1b0399a182192b2e91152c1f9
@@ -53,6 +57,8 @@ services:
       - ./pihole/data:/etc/pihole
     depends_on:
       - unbound
+    dns:
+      - 172.30.0.53
 
   homepage:
     image: ghcr.io/gethomepage/homepage:v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f
@@ -65,6 +71,8 @@ services:
       HOMEPAGE_VAR_PIHOLE_KEY: ${HOMEPAGE_VAR_PIHOLE_KEY:?Set HOMEPAGE_VAR_PIHOLE_KEY in .env (see .env.example)}
     volumes:
       - ./homepage/config:/app/config
+    dns:
+      - 172.30.0.53
 
   unbound:
     image: klutchell/unbound:v1.26.2

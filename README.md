@@ -7,6 +7,7 @@ I'm learning in public — this repo grows as the setup does.
 - **Public** apps go through a Cloudflare Tunnel → Caddy. No ports are open on the router.
 - **Private** apps live at `<job>.lab.sieg.dev`, reachable only over Tailscale: Pi-hole resolves `*.lab.sieg.dev` to the NUC's Tailscale IP, and Caddy serves them with a Let's Encrypt wildcard certificate (Cloudflare DNS challenge). The `tailscale serve` `ts.net` URLs remain as a fallback.
 - Host firewall (ufw): deny incoming; allow SSH from the LAN and all traffic over Tailscale.
+- Encrypted DNS everywhere: devices → Pi-hole → Unbound → Quad9, containers → Unbound, and the NUC's own lookups → systemd-resolved → Quad9, all over DNS-over-TLS. The router's DNS is ignored.
 - SSH: keys only, no passwords, no root login.
 - Automatic security updates, with reboots at 04:00 when needed.
 - Monitoring: healthchecks.io watches the NUC and its disk (smartd) from outside; Uptime Kuma watches each app.
@@ -30,7 +31,7 @@ I'm learning in public — this repo grows as the setup does.
 - `docs/` — [rebuild runbook](docs/rebuild.md), [monitoring reference](docs/monitoring.md), [updates](docs/updates.md), [email](docs/email.md)
 - `deploy.sh` — deploy what's on `main` (pull, fetch/rebuild images, restart what changed)
 - `renovate.json` — Renovate settings for update PRs; see [`docs/updates.md`](docs/updates.md)
-- `unbound/` — Unbound config: forwards Pi-hole's lookups to Quad9 over TLS
+- `unbound/` — Unbound config: forwards Pi-hole's and the containers' lookups to Quad9 over TLS
 
 ## Rebuild
 Step by step in [`docs/rebuild.md`](docs/rebuild.md).

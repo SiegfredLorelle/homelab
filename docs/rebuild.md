@@ -111,6 +111,16 @@ Install Docker from **Ubuntu's own packages** (kept current by Ubuntu's security
     sudo cp host/sysctl/*.conf /etc/sysctl.d/
     sudo sysctl --system
 
+    # Encrypted DNS for the NUC itself: Quad9 over TLS; ignore DNS servers handed out by the router
+    sudo mkdir -p /etc/systemd/resolved.conf.d
+    sudo cp host/systemd/resolved-quad9-dot.conf /etc/systemd/resolved.conf.d/quad9-dot.conf
+    for nic in wlp58s0 eno1; do
+      sudo mkdir -p /etc/systemd/network/10-netplan-$nic.network.d
+      sudo cp host/systemd/no-dhcp-dns.conf /etc/systemd/network/10-netplan-$nic.network.d/
+    done
+    sudo systemctl restart systemd-resolved
+    sudo networkctl reload && sudo networkctl reconfigure wlp58s0
+
 ## 7. Cloudflare Tunnel
 
 1. Install `cloudflared` from Cloudflare's apt repository, so `apt upgrade` keeps it current:
@@ -212,5 +222,5 @@ Disk health (`nuc-disk` check):
 - [ ] Phone on mobile data with the NUC as exit node: `ifconfig.me` shows the home IP
 - [ ] On a tailnet device: `https://status.lab.sieg.dev` and `https://dns.lab.sieg.dev` load with a valid certificate; `https://typo.lab.sieg.dev` shows the 404 page; stopping an app (e.g. `docker stop uptime-kuma`) shows the "App not responding" page, then `docker start` it again
 - [ ] `https://lab.sieg.dev` shows the dashboard, and both widgets show numbers
-- [ ] Encrypted DNS: `sudo timeout 20 tcpdump -ni wlp58s0 'port 53 and not host 100.115.71.107'` captures nothing while a laptop looks up new names; the same with `'port 853'` shows traffic to Quad9
+- [ ] Encrypted DNS: `resolvectl status` shows Global `+DNSOverTLS` with Quad9, and no DNS servers on `wlp58s0`; `sudo timeout 60 tcpdump -ni wlp58s0 'port 53 and not host 100.115.71.107 and not host 1.1.1.1'` captures nothing while a laptop and the NUC look up new names; the same with `'port 853'` shows traffic to Quad9
 - [ ] `sudo reboot` — everything above comes back on its own
