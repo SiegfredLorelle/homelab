@@ -11,7 +11,7 @@ Uptime Kuma keeps its settings in its database, not in git. Until backups exist,
 
 ## healthchecks.io
 
-Alerts: email. Ping URLs stay out of git — anyone holding one could send fake "alive" pings.
+Alerts: email + **ntfy** push (priority high for down, default for up). Ping URLs stay out of git — anyone holding one could send fake "alive" pings.
 
 ### Whole-box heartbeat: `nuc`
 
@@ -44,6 +44,19 @@ The container has a fixed IP, `172.30.0.10`, so Pi-hole's Query Log shows its DN
 | Default enabled | Yes, and applied to all existing monitors |
 
 Switch this to the new provider's SMTP server when email moves off Gmail, then revoke the app password.
+
+A second notification, **ntfy (phone)**, sends push alerts:
+
+| Setting | Value |
+| --- | --- |
+| Type | ntfy |
+| Server URL | `https://ntfy.sh` |
+| Topic | random `sieg-lab-…` name, kept in the password manager — never in git (anyone with it can read and send alerts) |
+| Priority | 3 (DOWN events: 4) |
+| Default enabled | Yes, and applied to all existing monitors |
+
+**Phone:** ntfy app (Google Play, by Philipp C. Heckel), subscribed to the topic on ntfy.sh; instant delivery in doze mode off.
+ntfy.sh is used (not self-hosted) so "NUC is down" alerts still arrive when the NUC is off.
 
 ### Monitors
 

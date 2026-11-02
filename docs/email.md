@@ -46,6 +46,9 @@ Adding a named address later: add its routing rule, a filter, and its exclusion 
 - Gmail → Settings → Accounts and Import → Send mail as: `hi@` and `work@`, name "Siegfred Lorelle Mina",
   SMTP `smtp.resend.com`, port `465` (SSL), username `resend`, password = the API key.
 - "Reply from the same address the message was sent to" is on.
+- **Bounce alerts**: Resend → Webhooks → events `email.bounced` and `email.complained` → ntfy:
+  `https://ntfy.sh/<topic>?tpl=yes&t=Resend%3A%20%7B%7B.type%7D%7D&m=To%3A%20%7B%7B.data.to%7D%7D%0ASubject%3A%20%7B%7B.data.subject%7D%7D&p=4&ta=warning`
+  (ntfy template → "Resend: email.bounced / To: … / Subject: …"). Test by sending from `hi@` to `bounced@resend.dev`.
 
 **Check a sent email**: in the recipient's Gmail, ⋮ → Show original → SPF, DKIM and DMARC should all be PASS
 (DKIM `d=sieg.dev`, SPF via `rsend.sieg.dev`).
@@ -67,7 +70,7 @@ Reports show who sends as `sieg.dev`. **Plan:** once reports show only Resend, t
 | Problem | Where to look |
 | --- | --- |
 | Mail to `@sieg.dev` not arriving | Cloudflare → Email Routing → `sieg.dev` → **Activity log** (forwarded / rejected / failed) |
-| Sent mail not arriving / bounced | **Resend → Emails / Logs** — bounces go to Resend (`rsend.sieg.dev`), not to Gmail |
+| Sent mail not arriving / bounced | **ntfy** push (bounce/complaint webhook), then **Resend → Emails / Logs** — bounces go to Resend (`rsend.sieg.dev`), not to Gmail |
 | Gmail can't send as `@sieg.dev` | Gmail's "message not delivered" notice; check the Resend API key in Send mail as |
 | Spoofing / authentication issues | Cloudflare → **DMARC Management** reports |
 | Records changed or missing | Uptime Kuma monitors **Mail MX** and **Mail DKIM**; domain expiry is watched by **Personal Website** |
@@ -86,5 +89,5 @@ The addresses never change: only DNS and settings do.
 
 ## Not covered by email
 
-Homelab alerts (Uptime Kuma, healthchecks.io) still go to the main Gmail directly; see
+Homelab alerts (Uptime Kuma, healthchecks.io) go to the main Gmail directly and to ntfy push; see
 [`monitoring.md`](monitoring.md).

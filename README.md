@@ -10,7 +10,7 @@ I'm learning in public — this repo grows as the setup does.
 - Encrypted DNS everywhere: devices → Pi-hole → Unbound → Quad9, containers → Unbound, and the NUC's own lookups → systemd-resolved → Quad9, all over DNS-over-TLS. The router's DNS is ignored.
 - SSH: keys only, no passwords, no root login.
 - Automatic security updates, with reboots at 04:00 when needed.
-- Monitoring: healthchecks.io watches the NUC and its disk (smartd) from outside; Uptime Kuma watches each app.
+- Monitoring: healthchecks.io watches the NUC and its disk (smartd) from outside; Uptime Kuma watches each app. Alerts by email and ntfy push notifications (ntfy.sh).
 - Tailscale exit node: my devices can route through home on untrusted Wi-Fi (chosen per device, off by default).
 
 ## Apps
@@ -38,7 +38,7 @@ Step by step in [`docs/rebuild.md`](docs/rebuild.md).
 
 ## Day to day
 - Tailscale stays connected on every device (Android: **Always-on VPN**); the exit node is only for untrusted networks.
-- Every device uses Pi-hole for DNS. If websites stop loading, turn Tailscale off on that device — if that fixes it, the NUC or Pi-hole is down (healthchecks.io / Uptime Kuma should have emailed).
+- Every device uses Pi-hole for DNS. If websites stop loading, turn Tailscale off on that device — if that fixes it, the NUC or Pi-hole is down (healthchecks.io / Uptime Kuma should have sent an alert).
 
 ## Secrets (not in git)
 Kept in my password manager as secure notes, each with its restore path:
@@ -48,6 +48,7 @@ Kept in my password manager as secure notes, each with its restore path:
 - **Pi-hole admin password** → `/srv/apps/.env` as `PIHOLE_PASSWORD=...`
 - **Pi-hole app password (Homepage)** → `/srv/apps/.env` as `HOMEPAGE_VAR_PIHOLE_KEY=...`
 - **Resend API key (Gmail send-as)** → not on the NUC; used in Gmail → Send mail as (see [`docs/email.md`](docs/email.md))
+- **ntfy topic (homelab alerts)** → not on the NUC; used in Uptime Kuma, healthchecks.io, and the Resend webhook (see [`docs/monitoring.md`](docs/monitoring.md))
 
 Restore: recreate each file with the note's exact contents, then:
 
