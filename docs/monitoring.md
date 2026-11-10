@@ -65,6 +65,7 @@ All monitors: heartbeat interval **60 s**, retries **2**, retry interval **60 s*
 | Name | Type | Target | Extra |
 | --- | --- | --- | --- |
 | Personal Website (public) | HTTP(s) - Keyword | `https://sieg.dev` | Keyword from the page title; certificate expiry and domain expiry notifications on |
+| viralab site (public) | HTTP(s) - Keyword | `https://viralab.sieg.dev/privacy/` | Keyword `privacy policy` (page title); checks the hostname route and the tunnel entry. Domain expiry off (covered by the `sieg.dev` monitor) |
 | Caddy (internal) | HTTP(s) | `http://caddy:8081` | Uses the Docker service name, not `127.0.0.1` |
 | Pi-hole (DNS) | DNS | `github.com` via resolver `pihole`, port 53 | Containers can't reach `100.115.71.107` (ufw blocks the Docker bridge), so it uses the service name. Domain expiry off |
 | Lab HTTPS (certificate) | HTTP(s) | `https://status.lab.sieg.dev` | Certificate expiry on, domain expiry off. Reaches Caddy through Docker network aliases on the `caddy` service, since containers can't resolve `lab.sieg.dev` or reach the Tailscale IP |

@@ -16,7 +16,7 @@ I'm learning in public — this repo grows as the setup does.
 ## Apps
 | App | Exposure | Notes |
 | --- | --- | --- |
-| Caddy + static site | Public (sieg.dev) | Through the Cloudflare Tunnel |
+| Caddy + static sites | Public (`sieg.dev`, `viralab.sieg.dev`) | Through the Cloudflare Tunnel; see [`sites/README.md`](sites/README.md) |
 | Uptime Kuma | Private — `status.lab.sieg.dev` | See [`docs/monitoring.md`](docs/monitoring.md) |
 | Pi-hole | Private — `dns.lab.sieg.dev`; DNS on the Tailscale IP | Ad-blocking DNS for my devices; upstream lookups go to Quad9 encrypted (DNS-over-TLS) via Unbound |
 | Homepage (dashboard) | Private — `lab.sieg.dev` | Start page: app tiles, live Pi-hole and Uptime Kuma widgets. Config in `homepage/config/` |

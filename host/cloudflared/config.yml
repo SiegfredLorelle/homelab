@@ -4,4 +4,6 @@ credentials-file: /home/asdasd/.cloudflared/108a7249-2632-44e2-bebc-6718b31c0de3
 ingress:
     - hostname: sieg.dev
       service: http://127.0.0.1:8081
+    - hostname: viralab.sieg.dev
+      service: http://127.0.0.1:8081
     - service: http_status:404
