@@ -1,7 +1,18 @@
-# Public site — reached only through the Cloudflare Tunnel (cloudflared → 127.0.0.1:8081)
+# Public sites — reached only through the Cloudflare Tunnel (cloudflared → 127.0.0.1:8081)
 :8081 {
-	root * /srv/personal-website
-	file_server
+	@viralab host viralab.sieg.dev
+	handle @viralab {
+		root * /srv/viralab-site
+		# The site is a private repo: never serve its git history or README
+		file_server {
+			hide .git README.md
+		}
+	}
+
+	handle {
+		root * /srv/personal-website
+		file_server
+	}
 }
 
 # Private apps — tailnet only (published on the Tailscale IP, port 443).

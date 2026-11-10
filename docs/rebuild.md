@@ -78,6 +78,8 @@ Install Docker from **Ubuntu's own packages** (kept current by Ubuntu's security
         git clone git@github.com:SiegfredLorelle/homelab.git /srv/apps
         cd /srv/apps/sites && git clone https://github.com/SiegfredLorelle/personal-website.git
 
+   `viralab-site` is private and needs its own deploy key first; see [`sites/README.md`](../sites/README.md).
+
 3. Recreate the gitleaks pre-commit hook (hooks are not stored in git):
 
         cat > /srv/apps/.git/hooks/pre-commit << 'EOF'
