@@ -3,15 +3,18 @@
 	@viralab host viralab.sieg.dev
 	handle @viralab {
 		root * /srv/viralab-site
-		# The site is a private repo: never serve its git history or README
+		# The site is a private repo: never serve its git history, other dotfiles or README
 		file_server {
-			hide .git README.md
+			hide .* README.md
 		}
 	}
 
 	handle {
 		root * /srv/personal-website
-		file_server
+		# Never serve .git or other dotfiles (this also hides any future /.well-known/)
+		file_server {
+			hide .*
+		}
 	}
 }
 
