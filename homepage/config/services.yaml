@@ -23,4 +23,9 @@
         icon: mdi-web
         href: https://sieg.dev
         description: Personal website, via Cloudflare Tunnel
-        siteMonitor: http://caddy:8081
+        siteMonitor: https://sieg.dev
+    - viralab.sieg.dev:
+        icon: mdi-web
+        href: https://viralab.sieg.dev
+        description: viralab site — home, terms, privacy (via Cloudflare Tunnel)
+        siteMonitor: https://viralab.sieg.dev
