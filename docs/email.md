@@ -55,8 +55,9 @@ Adding a named address later: add its routing rule, a filter, and its exclusion 
 
 ## DMARC
 
-Managed with Cloudflare DMARC Management (free): `_dmarc` TXT `v=DMARC1; p=none; rua=...@dmarc-reports.cloudflare.net`.
-Reports show who sends as `sieg.dev`. **Plan:** once reports show only Resend, tighten to `p=quarantine`.
+Managed with Cloudflare DMARC Management (free): `_dmarc` TXT `v=DMARC1; p=quarantine; rua=...@dmarc-reports.cloudflare.net`.
+Reports show who sends as `sieg.dev`. Moved from `p=none` to `p=quarantine` on 2026-11-16 after reports showed only
+Resend (Amazon SES), 100% aligned. **Later:** after a few months of clean reports, consider `p=reject`.
 
 ## Quirks
 
@@ -64,6 +65,10 @@ Reports show who sends as `sieg.dev`. **Plan:** once reports show only Resend, t
   yourself. Test from another account.
 - Gmail's "Show original" summary says DMARC **FAIL** when there is no DMARC result at all (e.g. no record yet,
   or a cached "no record" answer). Check the raw `Authentication-Results:` line for `dmarc=`.
+- **"Delivery failed" in the Activity log isn't always lost mail.** Gmail can temporarily refuse a burst of similar
+  forwarded emails (`421 4.7.28 ... unusual rate of unsolicited mail`); Cloudflare keeps retrying and usually
+  delivers hours later. Open the entry's **Lifecycle** — each retry is listed, ending in **Forwarded** once accepted.
+  Seen 2026-11 with frequent Google "Security alert" emails to `viralab@sieg.dev`.
 
 ## When something goes wrong
 
