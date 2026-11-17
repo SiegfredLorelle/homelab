@@ -18,7 +18,8 @@ Cloudflare dashboard → Email Service → Email Routing → `sieg.dev`.
 | --- | --- |
 | `hi@sieg.dev` | main Gmail |
 | `work@sieg.dev` | main Gmail |
-| `git@sieg.dev` | main Gmail |
+| `git@sieg.dev` | main Gmail — GitHub public profile email and notifications |
+| `commits@sieg.dev` | **Drop** — git `user.email` on all machines; verified on GitHub, then dropped so commit-harvested spam never arrives (to verify on another forge, e.g. GitLab: switch to "Send to an email" briefly, then back to Drop) |
 | Catch-all (any other `@sieg.dev`) | main Gmail |
 
 The destination Gmail must be **verified** (Destination addresses tab). Email Routing adds and
